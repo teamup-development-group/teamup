@@ -18,6 +18,9 @@
   // Install MongoDB on the server. Does not destroy the local MongoDB on future setups
   "setupMongo": true,
 
+  // Docker image to use
+  "dockerImage": "meteorhacks/meteord:base",
+
   // Application name (no spaces).
   "appName": "meteor",
 
@@ -37,7 +40,7 @@
   // Before mup checks that, it will wait for the number of seconds configured below.
   "deployCheckWaitTime": 15,
 
-  // show a progress bar while uploading. 
+  // show a progress bar while uploading.
   // Make it false when you deploy using a CI box.
   "enableUploadProgressBar": true
 }
