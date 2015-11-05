@@ -18,6 +18,8 @@ set +e
 docker pull meteorhacks/meteord:base
 set -e
 
+HOST_IP=`ip -4 addr show scope global dev eth0 | grep inet | awk '{print \$2}' | cut -d / -f 1`
+
 if [ "$USE_LOCAL_MONGO" == "1" ]; then
   docker run \
     -d \
@@ -27,6 +29,7 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
     --env-file=$ENV_FILE \
     --link=mongodb:mongodb \
     --hostname="$HOSTNAME-$APPNAME" \
+    --add-host=dockerhost:$HOST_IP \
     --env=MONGO_URL=mongodb://mongodb:27017/$APPNAME \
     --name=$APPNAME \
     meteorhacks/meteord:base
@@ -37,6 +40,7 @@ else
     --publish=$PORT:80 \
     --volume=$BUNDLE_PATH:/bundle \
     --hostname="$HOSTNAME-$APPNAME" \
+    --add-host=dockerhost:$HOST_IP \
     --env-file=$ENV_FILE \
     --name=$APPNAME \
     meteorhacks/meteord:base
