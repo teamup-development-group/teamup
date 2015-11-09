@@ -19,8 +19,8 @@
   "setupMongo": true,
 
   // mongorestore doesn't overwrite, without dropping/deleting per table first,
-  // the default is traditionally false
-  "restoreDrops": true,
+  // the default is traditionally to not drop, mupx changes thyat to drop by default (so noDrop is false)
+  //"noDrop": false,
 
   // When copying Mongo Backups don't delete the remote working temp folder (default /opt/backups/MDump_?)
   //"noCleanUp": false,

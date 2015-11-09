@@ -146,7 +146,7 @@ This will bundle the Meteor project and deploy it to the server. Bundling proces
 You may add any of the mongo options, but --out will be used as a local target directory for the dump to be transferred to ounce completed, and not the final filename. (The default is /opt/backups on both machines).
 Use --dockerId to manually override, otherwise automatic Mongo Docker container detection. The -v flag adds verbose console logging. Also noted adding --oplog is important, but will fail if not enabled on the 'mongod' docker container.
 The --in can be omitted if last argument is the path of the restoration directory (same as mongodump creates). All other arguments are passed through.
-When Mongo is restoring the action to Drop/Delete is turned on in the mup.json settings file via "restoreDrops", or the environment variable RESTORE_DROPS. Also noCleanUp and env NO_CLEANUP (--cli no argument) will not purge or clean-up the remote /opt/backups folder.
+When Mongo is restoring the action to Drop/Delete is turned on in the mup.json settings file via omission of "noDrop", otherwise add it or set the environment variable NO_DROP. Also noCleanUp and env NO_CLEANUP (--cli no argument) will not purge or clean-up the remote /opt/backups folder.
 It's useful to understand that the Mongo container is created in "setup" and not when deploying the app. It links the docker container to the docker host's /var/lib/mongodb folder, and this doesn't get overwritten without using --stomp.
 Sometimes this can become locked. You're supposed to do a repair but can force a --lockRemoval without too much concern. For an added convenience there is a 'mongounlock' command.
 

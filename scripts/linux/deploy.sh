@@ -21,7 +21,7 @@ APP_DIR=/opt/<%=appName %>
 
 # save the last known version
 cd $APP_DIR
-if [[ -d current ]]; then
+if sudo test -d current; then
   sudo rm -rf last
   sudo mv current last
 fi
