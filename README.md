@@ -160,6 +160,7 @@ When building the meteor app, we can invoke few options. So, you can mention the
   // build with the debug mode on
   "debug": true,
   // mobile setting for cordova apps
+  // if you do not add mobileSettings .meteor/platforms gets over written with 'server' and 'browser' only during deployment to avoid build errors.
   "mobileSettings": {
     "public": {
       "meteor-up": "rocks"
