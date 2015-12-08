@@ -221,9 +221,18 @@ For more information see [`lib/taskLists.js`](https://github.com/arunoda/meteor-
 
 #### Using a custom docker image
 
-The default docker image (MeteorD) can be overridden by setting `dockerImage`
-in the settings.json file.  This image should be based off of meteord to 
-ensure compatibility.
+The default docker image ([meteorhacks/meteord](https://hub.docker.com/r/meteorhacks/meteord/))
+can be overridden by setting `dockerImage` in the mup.json file.  This
+image should be based off of meteord to ensure compatibility. ([Here](https://github.com/gdw2/docker-meteord-buzz)
+is an example adding the `graphicsmagick` binary dependency to the docker image.)
+
+For example, add the following to `mup.json`:
+
+```
+  // Docker image to use
+  "dockerImage": "dockeruser/custommeteord:latest",
+```
+
 
 #### Multiple Deployment Targets
 

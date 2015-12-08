@@ -18,9 +18,6 @@
   // Install MongoDB on the server. Does not destroy the local MongoDB on future setups
   "setupMongo": true,
 
-  // Docker image to use
-  "dockerImage": "meteorhacks/meteord:base",
-
   // Application name (no spaces).
   "appName": "meteor",
 
