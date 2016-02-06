@@ -27,12 +27,17 @@ if(action == 'init') {
   //special setup for init
   ActionsRegistry.init();
 } else {
-  var cwd = path.resolve('.');
   //read config and validate it
   var config = Config.read(configFileName);
-  var runOptions = {
-    settingsFileName: settingsFileName
-  };
+
+  var cwd = path.resolve('.');
+
+  // Read cli arguments after action
+  var actionIndex     = process.argv.indexOf(action),
+      argsAfterAction = process.argv.slice(actionIndex + 1),
+      runOptions      = require('minimist')(argsAfterAction);
+  runOptions.settingsFileName = settingsFileName;
+  runOptions.raw = argsAfterAction.join(' ');
 
   runActions(config, cwd, runOptions);
 }
