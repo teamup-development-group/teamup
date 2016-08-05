@@ -37,7 +37,7 @@
   // Before mup checks that, it will wait for the number of seconds configured below.
   "deployCheckWaitTime": 15,
 
-  // show a progress bar while uploading. 
+  // show a progress bar while uploading.
   // Make it false when you deploy using a CI box.
   "enableUploadProgressBar": true
 }

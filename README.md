@@ -219,6 +219,21 @@ Meteor Up uses Docker to run and manage your app. It uses [MeteorD](https://gith
 
 For more information see [`lib/taskLists.js`](https://github.com/arunoda/meteor-up/blob/mupx/lib/taskLists/linux.js).
 
+#### Using a custom docker image
+
+The default docker image ([meteorhacks/meteord](https://hub.docker.com/r/meteorhacks/meteord/))
+can be overridden by setting `dockerImage` in the mup.json file.  This
+image should be based off of meteord to ensure compatibility. ([Here](https://github.com/gdw2/docker-meteord-buzz)
+is an example adding the `graphicsmagick` binary dependency to the docker image.)
+
+For example, add the following to `mup.json`:
+
+```
+  // Docker image to use
+  "dockerImage": "dockeruser/custommeteord:latest",
+```
+
+
 #### Multiple Deployment Targets
 
 You can use an array to deploy to multiple servers at once.
