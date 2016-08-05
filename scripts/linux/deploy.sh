@@ -1,7 +1,7 @@
 #!/bin/bash
 
 revert_app (){
-  if [[ -d old_app ]]; then
+  if sudo test -d old_app; then
     sudo rm -rf app
     sudo mv old_app app
     sudo stop <%= appName %> || :
@@ -21,7 +21,7 @@ APP_DIR=/opt/<%=appName %>
 
 # save the last known version
 cd $APP_DIR
-if [[ -d current ]]; then
+if sudo test -d current; then
   sudo rm -rf last
   sudo mv current last
 fi

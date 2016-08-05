@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Is docker already installed?
+echo "Docker Install Check..."
 set +e
 haveDocker=$(docker version | grep "version")
 set -e
@@ -19,4 +20,6 @@ if [ ! "$haveDocker" ]; then
 
   # Install docker
   wget -qO- https://get.docker.com/ | sudo sh
+else
+  echo "Docker Found!"
 fi

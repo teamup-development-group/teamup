@@ -1,7 +1,7 @@
 var nodemiral = require('nodemiral');
-//var fs = require('fs');
+var fs = require('fs');
 var path = require('path');
-//var util = require('util');
+var util = require('util');
 var _ = require('underscore');
 
 var SCRIPT_DIR = path.resolve(__dirname, '../../scripts/linux');
@@ -17,7 +17,7 @@ exports.setup = function(config) {
   taskList.executeScript('Setting up Environment', {
     script: path.resolve(SCRIPT_DIR, 'setup-env.sh'),
     vars: {
-      appName: config.appName || "meteorApp"
+      appName: config.appName
     }
   });
 
@@ -26,14 +26,9 @@ exports.setup = function(config) {
       src: path.resolve(TEMPLATES_DIR, 'mongodb.conf'),
       dest: '/opt/mongodb/mongodb.conf'
     });
-    config.mongoStomp = config.mongoStomp || config.env.MONGO_STOMP || process.env.MONGO_STOMP || false;
-    config.mongoUnlock = config.mongoUnlock || config.env.MONGO_UNLOCK || process.env.MONGO_UNLOCK || false;
+
     taskList.executeScript('Installing MongoDB', {
-      script: path.resolve(SCRIPT_DIR, 'install-mongodb.sh'),
-      vars: {
-        mongoStomp: config.mongoStomp || false,
-        mongoUnlock: config.mongoUnlock || false
-      }
+      script: path.resolve(SCRIPT_DIR, 'install-mongodb.sh')
     });
   }
 
@@ -77,7 +72,6 @@ exports.deploy = function(bundlePath, env, config) {
     dest: '/opt/' + appName + '/config/start.sh',
     vars: {
       appName: appName,
-      dockerImage: config.dockerImage,
       useLocalMongo: config.setupMongo,
       port: env.PORT,
       sslConfig: config.ssl
@@ -135,6 +129,20 @@ exports.start = function(config) {
   var deployCheckWaitTime = config.deployCheckWaitTime;
 
   startAndVerify(taskList, appName, port, deployCheckWaitTime);
+
+  return taskList;
+};
+
+exports.mongodump = function(config) {
+  console.log("in taskList MongoDump");
+  var taskList = nodemiral.taskList("Dumping Mongo");
+
+  taskList.executeScript('Dump Mongo', {
+    script: path.resolve(SCRIPT_DIR, 'mongo-dump.sh'),
+    vars: {
+      appName: config.appName
+    }
+  });
 
   return taskList;
 };

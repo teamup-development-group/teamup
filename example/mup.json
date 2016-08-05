@@ -18,6 +18,21 @@
   // Install MongoDB on the server. Does not destroy the local MongoDB on future setups
   "setupMongo": true,
 
+  // mongorestore doesn't overwrite, without dropping/deleting per table first,
+  // the default is traditionally to not drop, mupx changes thyat to drop by default (so noDrop is false)
+  //"noDrop": false,
+
+  // When copying Mongo Backups don't delete the remote working temp folder (default /opt/backups/MDump_?)
+  //"noCleanUp": false,
+
+  // When you run Setup DESTROY the entire Remote Mongo database folder [must re-Deploy to resend database].
+  //"mongoStomp": false,
+
+  // Force the Remote Mongo lockfile to be deleted. A Lock when resending Setup can triggers container startup loops until resolved.
+  // this is unnecessary if mongoStomp is true.
+  //"mongoUnlock": true, // for safetly reason maybe using --mongoUnlock is prefered
+
+
   // Application name (no spaces).
   "appName": "meteor",
 

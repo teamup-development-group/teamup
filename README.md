@@ -137,6 +137,19 @@ This will bundle the Meteor project and deploy it to the server. Bundling proces
 * `mupx restart` - restart the app
 * `mupx logs [-f --tail=50]` - get logs
 
+### Mongo Local Backup & Restore
+
+* `mupx mongoDump | md [--out localDir --dockerId ???????????? ]` - perform mongo database dump on an automatic mongo docker detected instance, or you may choose to set the dockerId explicitly.
+* `mupx mongoRestore | mr [--in localDir --dockerId ???????????? ]` - use a local folder to restore the database on an automatic mongo docker detected instance, or you may choose to set the dockerId explicitly.
+* `mupx mongoUnlock | mu - Sometime mongo won't start without removing a lock file. In production you should follow up with a Repair at that point.
+* `mupx mongoUnlockRemote | murt - If it's caught in a startup loop you can't do it Remotely. It can be used as a pre-shutdown procedure so it doesn't jam on restart. {It's just a tool that can come in handy.}[Proper Repair is recommended.]
+You may add any of the mongo options, but --out will be used as a local target directory for the dump to be transferred to ounce completed, and not the final filename. (The default is /opt/backups on both machines).
+Use --dockerId to manually override, otherwise automatic Mongo Docker container detection. The -v flag adds verbose console logging. Also noted adding --oplog is important, but will fail if not enabled on the 'mongod' docker container.
+The --in can be omitted if last argument is the path of the restoration directory (same as mongodump creates). All other arguments are passed through.
+When Mongo is restoring the action to Drop/Delete is turned on in the mup.json settings file via omission of "noDrop", otherwise add it or set the environment variable NO_DROP. Also noCleanUp and env NO_CLEANUP (--cli no argument) will not purge or clean-up the remote /opt/backups folder.
+It's useful to understand that the Mongo container is created in "setup" and not when deploying the app. It links the docker container to the docker host's /var/lib/mongodb folder, and this doesn't get overwritten without using --stomp.
+Sometimes this can become locked. You're supposed to do a repair but can force a --lockRemoval without too much concern. For an added convenience there is a 'mongounlock' command.
+
 ### Build Options
 
 When building the meteor app, we can invoke few options. So, you can mention them in `mup.json` like this:
@@ -147,6 +160,7 @@ When building the meteor app, we can invoke few options. So, you can mention the
   // build with the debug mode on
   "debug": true,
   // mobile setting for cordova apps
+  // if you do not add mobileSettings .meteor/platforms gets over written with 'server' and 'browser' only during deployment to avoid build errors.
   "mobileSettings": {
     "public": {
       "meteor-up": "rocks"
@@ -214,7 +228,7 @@ Meteor Up uses Docker to run and manage your app. It uses [MeteorD](https://gith
 * we've a demonized docker container running the above bundle.
 * docker container is started with `--restart=always` flag and it'll re-spawn the container if dies.
 * logs are maintained via Docker.
-* If you decided to use MongoDB, it'll be also running as a Docker conatiner. It's bound to the local interface and port 27017 (you cannot access from the outside)
+* If you decided to use MongoDB, it'll be also running as a Docker container. It's bound to the local interface and port 27017 (you cannot access from the outside)
 * the database is named `<appName>`
 
 For more information see [`lib/taskLists.js`](https://github.com/arunoda/meteor-up/blob/mupx/lib/taskLists/linux.js).
